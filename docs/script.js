@@ -1,5 +1,5 @@
 
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBmT5r5c8iFCq4RPwcuYk8PYBrYNRnVSt9Idh8Z7g1gtJjIWp3WBUpJZ21iTnjtLp6kNRoAR1JkGJg/pub?output=csvhttps://script.google.com/macros/s/AKfycbw3s5iZo7o4x6VboT4EiDK0mKR5bHkKhAVErcp8cpMyw7DUWlUratk_FV2N25q0LEIytA/exec'; 
+const CSV_URL = 'https://script.google.com/macros/s/AKfycbx1LV0CGiDkKFO8tEkPBD5w4xdJEMhcjSlGLny8CRVZ18cg5S4cfEOdgqOfcWZtfyRdZQ/exec'; 
 // Estado global para armazenar os pacientes e o índice atual
 const state = {
   paciente: null,
@@ -8,8 +8,8 @@ const state = {
 };
 
 
-// Nova função para carregar dados da planilha
-// CÓDIGO CORRIGIDO (substitua a função inteira no seu script.js)
+// Função para carregar dados da planilha
+
 async function loadData() {
   try {
     const response = await fetch(CSV_URL);
@@ -23,19 +23,23 @@ async function loadData() {
       nome: p.nome,
       sobrenome: p.sobrenome,
       idade: +p.idade || 0,
-      sexo: p.sexo,
+      sexo: p.sexo || '?',
       tempo: +p.tempo_diabetes_anos || 0,
       hba1c: +p.hba1c_perc || 0,
       imc: +p.imc || 0,
-      neuropatia: p.neuropatia_s_n === 'Sim',
-      dap: p.dap_s_n === 'Sim',
-      deformidade: p.deformidade_s_n === 'Sim',
-      ulc_prev: p.ulcera_previa_s_n === 'Sim',
-      amp_prev: p.amputacao_previa_s_n === 'Sim',
-      has: p.has_s_n === 'Sim',
-      tab: p.tabagismo_s_n === 'Sim',
-      alc: p.alcool_s_n === 'Sim',
-      atividade: p.atividade_fisica_s_n === 'Sim',
+
+      // conversão correta para booleanos 0/1
+      neuropatia: !!p.neuropatia_s_n,
+      dap: !!p.dap_s_n,
+      deformidade: !!p.deformidade_s_n,
+      ulc_prev: !!p.ulcera_previa_s_n,
+      amp_prev: !!p.amputacao_previa_s_n,
+      has: !!p.has_s_n,
+      tab: !!p.tabagismo_s_n,
+      alc: !!p.alcool_s_n,
+      atividade: !!p.atividade_fisica_s_n,
+
+      // sensores e métricas
       vel: +p.velocidade_marcha_m_s || 0,
       passos: +p.contagem_passos || 0,
       acc: +p.aceleracao_vertical_rms || 0,
@@ -44,6 +48,7 @@ async function loadData() {
       ppp_dir: +p.pressao_pico_dir_kpa || 0,
       temp_esq: +p.temperatura_esq_c || 0,
       temp_dir: +p.temperatura_dir_c || 0,
+
       risco_calc: +p.risco_modelo_rf || 0
     }));
 
@@ -58,6 +63,7 @@ async function loadData() {
     alert("Falha ao carregar dados do Apps Script. Verifique se o link está correto e publicado.");
   }
 }
+
 
 
 // Nova função para analisar o texto CSV

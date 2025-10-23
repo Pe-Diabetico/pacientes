@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Preditivo - Pé Diabético</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1><i class="fa-solid fa-brain"></i> Modelo Preditivo para Pé Diabético</h1>
+            <p>Uma exploração interativa das características (features) fundamentais para a avaliação de risco e prevenção de complicações.</p>
+        </header>
+
+        <h2>Categorias das Características</h2>
+        <main class="features-grid">
+
+            <div class="feature-card" data-feature-key="demografia">
+                <i class="fa-solid fa-users"></i>
+                <h3>Demografia e Antropometria</h3>
+                <p>Informações básicas do paciente, como idade, sexo e IMC.</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="glicemia">
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Controle Glicêmico</h3>
+                <p>Variáveis que indicam o manejo da doença, como tempo de diabetes e HbA1c.</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="etiologia">
+                <i class="fa-solid fa-disease"></i>
+                <h3>Fatores Etiológicos Primários</h3>
+                <p>Condições centrais que definem a etiologia do Pé Diabético (Neuropatia e DAP).</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="historico">
+                <i class="fa-solid fa-file-medical"></i>
+                <h3>Histórico de Lesões</h3>
+                <p>Eventos passados que indicam alto risco, como deformidades e úlceras prévias.</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="sistemico">
+                <i class="fa-solid fa-eye"></i>
+                <h3>Complicações Sistêmicas</h3>
+                <p>Complicações microvasculares que indicam o avanço da doença (Retinopatia, Nefropatia).</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="habitos">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <h3>Hábitos de Vida e Risco</h3>
+                <p>Fatores comportamentais e comorbidades (HAS, tabagismo, álcool, atividade física).</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="marcha">
+                <i class="fa-solid fa-person-walking"></i>
+                <h3>Análise da Marcha</h3>
+                <p>Parâmetros biomecânicos e cinemáticos obtidos por sensores (velocidade, passos).</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="pressao">
+                <i class="fa-solid fa-shoe-prints"></i>
+                <h3>Pressão Plantar (PPP e PTI)</h3>
+                <p>Medição do fator mecânico mais importante que leva à ulceração (Pico e Integral).</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card" data-feature-key="sensores">
+                <i class="fa-solid fa-temperature-half"></i>
+                <h3>Sensores Locais (Palmilha)</h3>
+                <p>Variáveis ambientais e de inflamação na interface pé-calçado (Temperatura, Umidade).</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+            <div class="feature-card target" data-feature-key="alvo">
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>O Alvo: Risco de Úlcera</h3>
+                <p>A variável de saída que o modelo de Machine Learning tentará prever.</p>
+                <button class="details-btn">Ver Detalhes</button>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title">Título da Característica</h2>
+            <ul id="modal-features-list">
+                </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

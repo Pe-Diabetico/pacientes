@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pacientes — Avaliação de Risco do Pé Diabético</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="sparkles">✦✦</div>
+    <header>
+      <div class="logo">PD</div>
+      <div>
+        <h1>Avaliação de Risco do Pé Diabético</h1>
+        <p class="lead">##############</p>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:20px">
+      <aside class="panel">
+        <div class="section-title">Paciente (simulado)</div>
+        <div class="patient-card">
+          <div class="avatar" id="avatar">CP</div>
+          <div class="meta">
+            <div id="p_nome">Nome: —</div>
+            <small id="p_demo">idade — • sexo — • imc —</small>
+            <small id="p_clin">Tempo DM — • HbA1c —</small>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div style="display:flex;gap:8px">
+            <button class="btn secondary" id="prev">Paciente Anterior</button>
+            <button class="btn" id="next">Próximo Paciente</button>
+          </div>
+
+          <div class="section-title" style="margin-top:6px">Etiologia & histórico</div>
+          <div class="toggle-row" id="etiologia"></div>
+
+          <div class="section-title" style="margin-top:8px">Estilo de vida</div>
+          <div class="toggle-row" id="habitos"></div>
+
+          <div class="section-title" style="margin-top:8px">Sensor — gait & plantar</div>
+          <div class="toggle-row" id="sensors"></div>
+        </div>
+      </aside>
+
+      <main class="canvas">
+        <div class="summary">
+          <div class="risk-meter">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="section-title">Risco estimado de úlcera</div>
+                <div class="risk-score" id="score">—</div>
+                <div class="muted">Classificação: <span id="score-label">—</span></div>
+              </div>
+              <div class="badges">
+                <div class="badge" id="badge-neuro">Neuropatia: —</div>
+                <div class="badge" id="badge-dap">DAP: —</div>
+              </div>
+            </div>
+            <div class="meter"><div class="meter-fill" id="meter-fill"></div></div>
+          </div>
+
+          <div style="width:340px;display:flex;flex-direction:column;gap:8px">
+            <div class="card">
+              <h3>Temperatura plantar</h3>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div style="flex:1">
+                  <div class="muted">Esquerdo: <strong id="temp-esq">—</strong> °C</div>
+                  <div class="muted">Direito: <strong id="temp-dir">—</strong> °C</div>
+                </div>
+                <div style="width:80px;text-align:center">
+                  <div class="muted">Assimetria</div>
+                  <div style="font-weight:800;font-size:20px" id="temp-ass">—</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Pressão Plantar (PPP)</h3>
+              <div class="muted">Esq: <strong id="ppp-esq">—</strong> kPa • Dir: <strong id="ppp-dir">—</strong> kPa</div>
+              <div style="height:8px;margin-top:8px;background:rgba(255,255,255,0.02);border-radius:6px;overflow:hidden">
+                <div id="ppp-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#60a5fa,#f97316)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Características demográficas & clínicas</h3>
+            <div class="feature-list">
+              <div class="feature"><div>Idade</div><div id="f_idade">—</div></div>
+              <div class="feature"><div>Sexo</div><div id="f_sexo">—</div></div>
+              <div class="feature"><div>IMC</div><div id="f_imc">—</div></div>
+              <div class="feature"><div>Anos com Diabete</div><div id="f_tempo">—</div></div>
+              <div class="feature"><div>Hemoglobina Glicada (HbA1c)</div><div id="f_hba1c">—</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Biomecânica & marcha</h3>
+            <div class="feature-list">
+              <div class="feature"><div>Velocidade da Marcha (m/s)</div><div id="f_vel">—</div></div>
+              <div class="feature"><div>Contagem de Passos</div><div id="f_passos">—</div></div>
+              <div class="feature"><div>Aceleração Vertical (RMS)</div><div id="f_acc">—</div></div>
+              <div class="feature"><div>Orientação do Pé (°)</div><div id="f_ori">—</div></div>
+              <div class="feature"><div>Deformidade Presente</div><div id="f_defo">—</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Comorbidades & hábitos</h3>
+            <div class="feature-list">
+              <div class="feature"><div>Hipertensão Arterial Sistêmica</div><div id="f_has">—</div></div>
+              <div class="feature"><div>Tabagismo</div><div id="f_tab">—</div></div>
+              <div class="feature"><div>Consumo de Álcool</div><div id="f_alc">—</div></div>
+              <div class="feature"><div>Pratica Atividade Física</div><div id="f_atividade">—</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Histórico de lesões</h3>
+            <div class="feature-list">
+              <div class="feature"><div>Úlcera Prévia</div><div id="f_ulc">—</div></div>
+              <div class="feature"><div>Amputação Prévia</div><div id="f_amp">—</div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <div class="refs">
+        <strong>Referências (citadas no conteúdo):</strong>
+        <ul>
+          <li>Chauhan et al., 2023</li>
+          <li>Khandakar et al., 2022</li>
+          <li>Tavares et al., 2016</li>
+          <li>Ferreira, 2017</li>
+          <li>Castillo-Morquecho et al., 2024</li>
+          <li>Casadei et al., 2021 (citado em Castillo-Morquecho et al., 2024)</li>
+          <li>Borges, 2023</li>
+          <li>Chen et al., 2021</li>
+          <li>Razak et al., 2012</li>
+          <li>Castro-Martins, 2024</li>
+          <li>Lourenço, 2018</li>
+          <li>Everett et al., 2022</li>
+          <li>Kosaji et al., 2025</li>
+          <li>Huang et al., 2024</li>
+        </ul>
+        <div style="margin-top:8px" class="muted">Observação: referências apresentadas conforme solicitado — são listadas para fins educacionais. Para citações formais, consulte os artigos originais.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+id: Identificador único do paciente simulado.
+nome: Primeiro nome fictício do paciente.
+sobrenome: Sobrenome fictício do paciente.
+idade: Idade do paciente em anos.
+sexo: Sexo biológico do paciente (M ou F).
+tempo_diabetes_anos: Há quantos anos o paciente tem diabetes.
+hba1c_perc: Nível percentual de Hemoglobina Glicada (controle glicêmico).
+imc: Índice de Massa Corporal do paciente.
+neuropatia_s_n: Indica se o paciente tem (1) ou não (0) neuropatia periférica.
+deformidade_s_n: Indica se o paciente tem (1) ou não (0) deformidade no pé.
+ulcera_previa_s_n: Indica se o paciente já teve (1) ou não (0) úlcera no pé.
+amputacao_previa_s_n: Indica se o paciente já teve (1) ou não (0) amputação.
+dap_s_n: Indica se o paciente tem (1) ou não (0) Doença Arterial Periférica.
+retinopatia_s_n: Indica se o paciente tem (1) ou não (0) retinopatia diabética.
+nefropatia_s_n: Indica se o paciente tem (1) ou não (0) nefropatia diabética.
+has_s_n: Indica se o paciente tem (1) ou não (0) Hipertensão Arterial Sistêmica.
+tabagismo_s_n: Indica se o paciente é fumante (1) ou não (0).
+alcool_s_n: Indica se o paciente consome álcool (1) ou não (0).
+atividade_fisica_s_n: Indica se o paciente é fisicamente ativo (1) ou não (0).
+velocidade_marcha_m_s: Velocidade média da caminhada do paciente em metros por segundo.
+contagem_passos: Número estimado de passos diários do paciente.
+aceleracao_vertical_rms: Intensidade média (RMS) do impacto vertical durante a marcha.
+orientacao_pe_graus: Variabilidade angular (estabilidade) do pé durante a marcha em graus.
+pressao_pico_esq_kpa: Pico máximo de pressão na planta do pé esquerdo em kPa.
+pressao_pico_dir_kpa: Pico máximo de pressão na planta do pé direito em kPa.
+pressao_integral_esq_kpa_s: Carga de pressão acumulada no pé esquerdo durante o apoio (PTI) em kPa*s.
+pressao_integral_dir_kpa_s: Carga de pressão acumulada no pé direito durante o apoio (PTI) em kPa*s.
+temperatura_esq_c: Temperatura da pele na planta do pé esquerdo em °C.
+temperatura_dir_c: Temperatura da pele na planta do pé direito em °C.
+temp_assimetria_c: Diferença absoluta de temperatura entre os pés em °C.
+umidade_esq_perc: Umidade relativa na interface pé-palmilha esquerda em %.
+umidade_dir_perc: Umidade relativa na interface pé-palmilha direita em %.
+risco_ulcera_calc: Classificação calculada do risco de úlcera (0=Baixo, 1=Alto) - Variável Alvo.

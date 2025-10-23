@@ -1,0 +1,248 @@
+/* Importa uma fonte moderna do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+/* Configurações Globais */
+:root {
+    --primary-color: #007bff; /* Azul primário */
+    --secondary-color: #0056b3; /* Azul mais escuro */
+    --target-color: #28a745; /* Verde para o "Alvo" */
+    --target-hover: #218838;
+    --light-gray: #f4f7f6;
+    --dark-gray: #333;
+    --medium-gray: #666;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+/* Container Principal */
+.container {
+    max-width: 1300px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Cabeçalho */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+header h1 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+header h1 i {
+    margin-right: 10px;
+}
+
+header p {
+    font-size: 1.1em;
+    color: var(--medium-gray);
+    max-width: 800px;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--dark-gray);
+    font-weight: 700;
+}
+
+/* Grade de Cards */
+.features-grid {
+    display: grid;
+    /* Cria colunas responsivas: auto-fit tenta encaixar o máximo de colunas com min 300px */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Estilo dos Cards */
+.feature-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.feature-card i {
+    font-size: 3em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    margin-bottom: 15px;
+    color: var(--dark-gray);
+    font-size: 1.4em;
+}
+
+.feature-card p {
+    font-size: 1em;
+    color: var(--medium-gray);
+    flex-grow: 1; /* Faz o parágrafo ocupar o espaço, alinhando os botões */
+    margin-bottom: 20px;
+}
+
+/* Botão "Ver Detalhes" */
+.details-btn {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background 0.3s ease;
+}
+
+.details-btn:hover {
+    background: var(--secondary-color);
+}
+
+/* Estilo especial para o Card "Alvo" */
+.feature-card.target i {
+    color: var(--target-color);
+}
+
+.feature-card.target .details-btn {
+    background: var(--target-color);
+}
+
+.feature-card.target .details-btn:hover {
+    background: var(--target-hover);
+}
+
+
+/* Estilo do Modal (Pop-up) */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Permite scroll se o conteúdo for grande */
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo escurecido */
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 5% do topo e centralizado horizontalmente */
+    padding: 40px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 900px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    /* Animação de entrada */
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Botão de Fechar */
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #333;
+}
+
+#modal-title {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+/* Lista de Características no Modal */
+#modal-features-list {
+    list-style: none;
+    padding: 0;
+}
+
+#modal-features-list li {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#modal-features-list li:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+#modal-features-list strong {
+    display: block;
+    font-size: 1.3em;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+#modal-features-list p {
+    font-size: 1.1em;
+    color: #444;
+}
+
+/* Estilo para as Referências */
+#modal-features-list em {
+    font-style: italic;
+    color: var(--medium-gray);
+    font-size: 0.95em;
+    display: block;
+    margin-top: 10px;
+    background: #f9f9f9;
+    padding: 5px 8px;
+    border-radius: 4px;
+}

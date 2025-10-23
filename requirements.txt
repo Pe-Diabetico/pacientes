@@ -1,0 +1,20 @@
+# Núcleo científico e manipulação de dados
+pandas
+numpy
+faker
+
+# Machine Learning
+scikit-learn
+imbalanced-learn
+joblib
+matplotlib
+seaborn
+
+# Google API e autenticação
+gspread
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+
+# Utilidades e configuração
+python-dotenv

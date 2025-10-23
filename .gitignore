@@ -1,0 +1,30 @@
+# Ambiente Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.*
+
+# Modelos e artefatos de ML
+*.joblib
+*.pkl
+
+# Dados locais
+*.csv
+*.xlsx
+*.ods
+
+# Credenciais e chaves
+credentials.json
+*.pem
+*.key
+*.crt
+
+# Notebooks temporários
+*.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store

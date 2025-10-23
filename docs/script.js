@@ -1,5 +1,5 @@
 
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBmT5r5c8iFCq4RPwcuYk8PYBrYNRnVSt9Idh8Z7g1gtJjIWp3WBUpJZ21iTnjtLp6kNRoAR1JkGJg/pub?gid=0&single=true&output=csv'; 
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBmT5r5c8iFCq4RPwcuYk8PYBrYNRnVSt9Idh8Z7g1gtJjIWp3WBUpJZ21iTnjtLp6kNRoAR1JkGJg/pub?output=csvhttps://script.google.com/macros/s/AKfycbw3s5iZo7o4x6VboT4EiDK0mKR5bHkKhAVErcp8cpMyw7DUWlUratk_FV2N25q0LEIytA/exec'; 
 // Estado global para armazenar os pacientes e o índice atual
 const state = {
   paciente: null,
@@ -11,45 +11,54 @@ const state = {
 // Nova função para carregar dados da planilha
 // CÓDIGO CORRIGIDO (substitua a função inteira no seu script.js)
 async function loadData() {
-  // CORREÇÃO: Apenas verifica se CSV_URL está vazio ou nulo.
-  if (!CSV_URL) { 
-      alert("Erro: A constante CSV_URL no início do script.js está vazia. Cole o link da sua planilha publicada como CSV.");
-      return;
-  }
-  // Verifica se o URL parece ser um link do Google Sheets publicado como CSV
-  if (!CSV_URL.startsWith('https://docs.google.com/spreadsheets/d/e/') || !CSV_URL.endsWith('output=csv')) {
-     console.warn("Aviso: O CSV_URL não parece ser um link CSV publicado corretamente do Google Sheets (deve terminar com 'output=csv'). Verifique o link.");
-     // Continua mesmo assim, mas pode dar erro no fetch ou parse.
-  }
-
   try {
     const response = await fetch(CSV_URL);
-    if (!response.ok) {
-      throw new Error(`Erro ao buscar CSV: ${response.statusText} (URL: ${CSV_URL})`);
-    }
-    const csvText = await response.text();
-    // Pequena verificação se parece CSV (começa com cabeçalhos esperados)
-    if (!csvText || !csvText.startsWith('id,nome,sobrenome')) { 
-        console.warn("O texto recebido não parece ser um CSV válido. Verifique o link e o formato de publicação.");
-        // Tenta parsear mesmo assim, mas pode falhar
-    }
-    state.allPatients = parseCSV(csvText);
-    
+    if (!response.ok) throw new Error(`Erro HTTP ${response.status}`);
+    const data = await response.json();
+
+    if (!Array.isArray(data)) throw new Error("Resposta não é um array JSON");
+
+    // Converte o JSON para o formato esperado pelo visualizador
+    state.allPatients = data.map(p => ({
+      nome: p.nome,
+      sobrenome: p.sobrenome,
+      idade: +p.idade || 0,
+      sexo: p.sexo,
+      tempo: +p.tempo_diabetes_anos || 0,
+      hba1c: +p.hba1c_perc || 0,
+      imc: +p.imc || 0,
+      neuropatia: p.neuropatia_s_n === 'Sim',
+      dap: p.dap_s_n === 'Sim',
+      deformidade: p.deformidade_s_n === 'Sim',
+      ulc_prev: p.ulcera_previa_s_n === 'Sim',
+      amp_prev: p.amputacao_previa_s_n === 'Sim',
+      has: p.has_s_n === 'Sim',
+      tab: p.tabagismo_s_n === 'Sim',
+      alc: p.alcool_s_n === 'Sim',
+      atividade: p.atividade_fisica_s_n === 'Sim',
+      vel: +p.velocidade_marcha_m_s || 0,
+      passos: +p.contagem_passos || 0,
+      acc: +p.aceleracao_vertical_rms || 0,
+      ori: +p.orientacao_pe_graus || 0,
+      ppp_esq: +p.pressao_pico_esq_kpa || 0,
+      ppp_dir: +p.pressao_pico_dir_kpa || 0,
+      temp_esq: +p.temperatura_esq_c || 0,
+      temp_dir: +p.temperatura_dir_c || 0,
+      risco_calc: +p.risco_modelo_rf || 0
+    }));
+
     if (state.allPatients.length > 0) {
-      console.log(`Carregados ${state.allPatients.length} pacientes.`);
-      showPatient(state.currentIndex);
+      showPatient(0);
     } else {
-      console.error("Nenhum paciente encontrado após parsear o CSV.");
-      // Não mostra alerta aqui se parseCSV já mostrou um
-      if (columnMap.risco_calc !== -1) { // Só mostra alerta se o parse não falhou por coluna faltando
-           alert("Não foi possível encontrar dados de pacientes no link fornecido. Verifique o console para mais detalhes.");
-      }
+      alert("Nenhum paciente encontrado.");
     }
-  } catch (error) {
-    console.error("Falha ao carregar ou analisar os dados:", error);
-    alert(`Não foi possível carregar os dados da planilha. Verifique o link (precisa ser ...output=csv) e se a planilha está publicada corretamente. Detalhes no console.`);
+
+  } catch (err) {
+    console.error("Erro ao carregar JSON:", err);
+    alert("Falha ao carregar dados do Apps Script. Verifique se o link está correto e publicado.");
   }
 }
+
 
 // Nova função para analisar o texto CSV
 function parseCSV(text) {

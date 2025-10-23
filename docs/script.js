@@ -10,15 +10,23 @@ const state = {
 
 // Função para carregar dados da planilha
 
-async function loadData() {
+// --- Carregar via JSONP (sem CORS) ---
+function loadData() {
+  const script = document.createElement("script");
+  script.src = `${CSV_URL}?callback=onDataLoaded`;
+  document.body.appendChild(script);
+}
+
+// --- Callback JSONP ---
+function onDataLoaded(data) {
   try {
-    const response = await fetch(CSV_URL);
-    if (!response.ok) throw new Error(`Erro HTTP ${response.status}`);
-    const data = await response.json();
+    console.log("Dados recebidos via JSONP:", data);
 
-    if (!Array.isArray(data)) throw new Error("Resposta não é um array JSON");
+    if (!Array.isArray(data) || data.length === 0) {
+      alert("Nenhum dado encontrado.");
+      return;
+    }
 
-    // Converte o JSON para o formato esperado pelo visualizador
     state.allPatients = data.map(p => ({
       nome: p.nome,
       sobrenome: p.sobrenome,
@@ -28,7 +36,6 @@ async function loadData() {
       hba1c: +p.hba1c_perc || 0,
       imc: +p.imc || 0,
 
-      // conversão correta para booleanos 0/1
       neuropatia: !!p.neuropatia_s_n,
       dap: !!p.dap_s_n,
       deformidade: !!p.deformidade_s_n,
@@ -39,7 +46,6 @@ async function loadData() {
       alc: !!p.alcool_s_n,
       atividade: !!p.atividade_fisica_s_n,
 
-      // sensores e métricas
       vel: +p.velocidade_marcha_m_s || 0,
       passos: +p.contagem_passos || 0,
       acc: +p.aceleracao_vertical_rms || 0,
@@ -48,21 +54,17 @@ async function loadData() {
       ppp_dir: +p.pressao_pico_dir_kpa || 0,
       temp_esq: +p.temperatura_esq_c || 0,
       temp_dir: +p.temperatura_dir_c || 0,
-
       risco_calc: +p.risco_modelo_rf || 0
     }));
 
-    if (state.allPatients.length > 0) {
-      showPatient(0);
-    } else {
-      alert("Nenhum paciente encontrado.");
-    }
-
+    state.currentIndex = 0;
+    showPatient(0);
   } catch (err) {
-    console.error("Erro ao carregar JSON:", err);
-    alert("Falha ao carregar dados do Apps Script. Verifique se o link está correto e publicado.");
+    console.error("Erro ao processar dados JSONP:", err);
+    alert("Erro ao carregar dados.");
   }
 }
+
 
 
 
@@ -243,6 +245,46 @@ function atualizarUI() {
   // preencher features
   const fillOr = (id,val)=>document.getElementById(id).textContent = val===undefined?'—':val;
   const simNao = (val) => val ? 'Sim' : 'Não';
+
+  // Preencher características demográficas & clínicas
+  fillOr('f_idade', p.idade);
+  fillOr('f_sexo', p.sexo);
+  fillOr('f_imc', p.imc.toFixed(1));
+  fillOr('f_tempo', p.tempo);
+  fillOr('f_hba1c', p.hba1c.toFixed(1) + '%');
+
+  // Preencher biomecânica & marcha
+  fillOr('f_vel', p.vel.toFixed(2));
+  fillOr('f_passos', p.passos);
+  fillOr('f_acc', p.acc.toFixed(2));
+  fillOr('f_ori', p.ori.toFixed(1));
+  fillOr('f_defo', simNao(p.deformidade));
+
+  // Preencher comorbidades & hábitos
+  fillOr('f_has', simNao(p.has));
+  fillOr('f_tab', simNao(p.tab));
+  fillOr('f_alc', simNao(p.alc));
+  fillOr('f_atividade', simNao(p.atividade));
+
+  // Preencher histórico de lesões
+  fillOr('f_ulc', simNao(p.ulc_prev));
+  fillOr('f_amp', simNao(p.amp_prev));
+
+  // Preencher temperatura plantar
+  fillOr('temp-esq', p.temp_esq.toFixed(1));
+  fillOr('temp-dir', p.temp_dir.toFixed(1));
+  const assimetria = Math.abs(p.temp_esq - p.temp_dir).toFixed(1);
+  fillOr('temp-ass', assimetria + '°C');
+
+  // Preencher pressão plantar
+  fillOr('ppp-esq', p.ppp_esq.toFixed(1));
+  fillOr('ppp-dir', p.ppp_dir.toFixed(1));
+  
+  // Atualizar barra de pressão (assumindo max ~500 kPa)
+  const maxPPP = Math.max(p.ppp_esq, p.ppp_dir);
+  const pppPct = Math.min(100, (maxPPP / 500) * 100);
+  document.getElementById('ppp-bar').style.width = pppPct + '%';
+
   document.getElementById('badge-neuro').textContent = `Neuropatia: ${simNao(p.neuropatia)}`;
   document.getElementById('badge-dap').textContent = `DAP: ${simNao(p.dap)}`;
 

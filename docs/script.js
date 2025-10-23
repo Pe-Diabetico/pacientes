@@ -54,6 +54,8 @@ function onDataLoaded(data) {
       ppp_dir: +p.pressao_pico_dir_kpa || 0,
       temp_esq: +p.temperatura_esq_c || 0,
       temp_dir: +p.temperatura_dir_c || 0,
+      umid_esq: +p.umidade_esq_perc || 0,
+      umid_dir: +p.umidade_dir_perc || 0,
       risco_calc: +p.risco_modelo_rf || 0
     }));
 
@@ -242,6 +244,12 @@ function atualizarUI() {
   sensors.appendChild(chip(`PPP E ${p.ppp_esq} kPa`, true));
   sensors.appendChild(chip(`PPP D ${p.ppp_dir} kPa`, true));
 
+  // historico chips
+  const historico = document.getElementById('historico'); 
+  historico.innerHTML='';
+  historico.appendChild(chip('Úlcera prévia', p.ulc_prev));
+  historico.appendChild(chip('Amputação prévia', p.amp_prev));
+
   // preencher features
   const fillOr = (id,val)=>document.getElementById(id).textContent = val===undefined?'—':val;
   const simNao = (val) => val ? 'Sim' : 'Não';
@@ -267,19 +275,25 @@ function atualizarUI() {
   fillOr('f_atividade', simNao(p.atividade));
 
   // Preencher histórico de lesões
-  fillOr('f_ulc', simNao(p.ulc_prev));
-  fillOr('f_amp', simNao(p.amp_prev));
+  //fillOr('f_ulc', simNao(p.ulc_prev));
+  //fillOr('f_amp', simNao(p.amp_prev));
 
   // Preencher temperatura plantar
   fillOr('temp-esq', p.temp_esq.toFixed(1));
   fillOr('temp-dir', p.temp_dir.toFixed(1));
   const assimetria = Math.abs(p.temp_esq - p.temp_dir).toFixed(1);
   fillOr('temp-ass', assimetria + '°C');
+  
+  // Preencher umidade plantar
+  fillOr('umid-esq', p.umid_esq.toFixed(1));
+  fillOr('umid-dir', p.umid_dir.toFixed(1));
+  const umidDiff = Math.abs(p.umid_esq - p.umid_dir).toFixed(1);
+  fillOr('umid-diff', umidDiff + '%');
 
   // Preencher pressão plantar
   fillOr('ppp-esq', p.ppp_esq.toFixed(1));
   fillOr('ppp-dir', p.ppp_dir.toFixed(1));
-  
+
   // Atualizar barra de pressão (assumindo max ~500 kPa)
   const maxPPP = Math.max(p.ppp_esq, p.ppp_dir);
   const pppPct = Math.min(100, (maxPPP / 500) * 100);

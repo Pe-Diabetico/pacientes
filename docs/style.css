@@ -13,12 +13,12 @@
 }
 
 html, body {
-  height:100%;
-  margin:0;
-  background:radial-gradient(1200px 600px at 10% 10%,#071226 0%, transparent 15%),
-             linear-gradient(180deg,#071028 0%, #081322 50%, #06101e 100%);
-  color:#e6eef6;
+  height: 100%;
+  margin: 0;
+  background-color: #081322;
+  color: #e6eef6;
 }
+
 
 .wrap {
   max-width:1150px;
